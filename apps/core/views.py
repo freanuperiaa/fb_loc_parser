@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from .serializers import AccountSerializer, UserSerializer, FriendSerializer
 from .models import Account, Friend
 
+from .tasks import scrape
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
@@ -19,7 +21,7 @@ class AccountView(APIView):
         serializer = AccountSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # call spider here!!!
+            scrape.delay(request.data['email'], request.data['password'])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

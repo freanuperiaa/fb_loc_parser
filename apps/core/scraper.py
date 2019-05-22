@@ -1,6 +1,8 @@
 import scrapy
 from scrapy import FormRequest
 
+from .models import Friend, Account
+
 
 class FriendsLocSpider(scrapy.Spider):
 
@@ -92,17 +94,19 @@ class FriendsLocSpider(scrapy.Spider):
         )
 
     def parse_info(self, response):
-        print(response.meta.get('profile_url'))
+        url = response.meta.get('profile_url')
         name = self.get_element(response.xpath(
             '//div/span/strong[string-length(@class) = 2]/text()'
         ).extract())
-        print(name)
         current_city = self.get_element(response.xpath(
             '//div[contains(@title, "Current City")]//a/text()'
         ).extract())
-        print(current_city)
         hometown = self.get_element(response.xpath(
             '//div[contains(@title, "Hometown")]//a/text()'
         ).extract())
-        print(hometown)
-        print('\n\n==========\n\n')
+        this_account = Account.objects.get(email=self.email)
+        new_friend = Friend(
+            name=name, profile_url=url, current_city=current_city,
+            hometown=hometown, friend_of=this_account,
+        )
+        new_friend.save()

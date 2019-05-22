@@ -27,3 +27,18 @@ class AccountView(APIView):
         accounts = Account.objects.all()
         serializer = AccountSerializer(accounts, many=True)
         return Response(serializer.data)
+
+
+class AllFriendsListView(APIView):
+    def get(self, request, format=None):
+        friends = Friend.objects.all()
+        serializer = FriendSerializer(friends, many=True)
+        return Response(serializer.data)
+
+
+class FriendsListView(APIView):
+    def get(self, request, account, format=None):
+        account = self.kwargs['account']
+        friends = Friend.objects.filter(friend_of__email=account)
+        serializer = FriendSerializer(friends, many=True)
+        return Response(serializer.data)

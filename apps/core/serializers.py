@@ -20,4 +20,4 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = (
-            'name', 'current_city', 'hometown', 'moved_here', 'friend_of')
+            'name', 'current_city', 'hometown', 'friend_of')

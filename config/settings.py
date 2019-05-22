@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.core',
     'rest_framework',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -120,3 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Celery Stuff
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_WORKER_REDIRECT_STDOUTS_LEVEL = 'ERROR'

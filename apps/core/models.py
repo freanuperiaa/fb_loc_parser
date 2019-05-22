@@ -11,9 +11,9 @@ class Account(models.Model):
 
 class Friend(models.Model):
     name = models.CharField(max_length=200)
+    profile_url = models.URLField(default='https://mbasic.facebook.com')
     current_city = models.CharField(max_length=250, blank=True, null=True)
     hometown = models.CharField(max_length=250, blank=True, null=True)
-    moved_here = models.CharField(max_length=250, blank=True, null=True)
     friend_of = models.ForeignKey(
         Account, on_delete=models.SET_NULL, null=True, related_name='friends')
 
